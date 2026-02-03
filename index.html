@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Be My Valentine 💖</title>
+  <meta charset="UTF-8">
+  <title>Be My Valentine 💘</title>
   <style>
     body {
       margin: 0;
@@ -19,81 +19,94 @@
       padding: 40px;
       border-radius: 20px;
       text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      width: 320px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      width: 340px;
+      animation: fadeIn 0.6s ease-in-out;
     }
 
     h1 {
       color: #ff4d6d;
-      margin-bottom: 30px;
-    }
-
-    .buttons {
-      position: relative;
-      height: 120px;
+      margin-bottom: 25px;
     }
 
     button {
-      padding: 12px 24px;
+      padding: 14px 28px;
       font-size: 18px;
       border: none;
-      border-radius: 25px;
+      border-radius: 30px;
       cursor: pointer;
-      position: absolute;
+      margin: 10px;
+      transition: all 0.25s ease;
     }
 
     #yesBtn {
       background: #ff4d6d;
       color: white;
-      left: 50%;
-      transform: translateX(-50%);
     }
 
     #noBtn {
-      background: #ccc;
+      background: #e0e0e0;
       color: #333;
-      left: 50%;
-      top: 60px;
-      transform: translateX(-50%);
     }
 
-    #message {
-      margin-top: 20px;
-      font-size: 20px;
-      color: #ff4d6d;
-      display: none;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
 <body>
 
   <div class="card">
-    <h1>Will you be my Valentine? 💘</h1>
+    <h1 id="question">Will you be my Valentine? 💘</h1>
 
-    <div class="buttons">
-      <button id="yesBtn">Yes 💖</button>
-      <button id="noBtn">No 😅</button>
+    <div>
+      <button id="yesBtn" onclick="sayYes()">Yes 💖</button>
+      <button id="noBtn" onclick="sayNo()">No 😅</button>
     </div>
-
-    <div id="message">Yay!! 💕 I knew you’d say yes! 😍</div>
   </div>
 
   <script>
-    const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const message = document.getElementById("message");
+    let noCount = 0;
 
-    noBtn.addEventListener("mouseover", () => {
-      const x = Math.random() * 200 - 100;
-      const y = Math.random() * 80;
-      noBtn.style.transform = `translate(${x}px, ${y}px)`;
-    });
+   const noButtonTexts = [
+      "No 😅",
+      "Hmm… 🤔",
+      "Maybe not 😬",
+      "I regret this 😳",
+      "Why am I clicking this 🙈",
+      "This feels wrong 😅",
+      "I should stop 😏"
+    ];
 
-    yesBtn.addEventListener("click", () => {
-      message.style.display = "block";
-      yesBtn.style.display = "none";
-      noBtn.style.display = "none";
-    });
+    function sayNo() {
+      noCount++;
+
+      const yesBtn = document.getElementById("yesBtn");
+      const noBtn = document.getElementById("noBtn");
+
+      // YES grows 😈
+      yesBtn.style.fontSize = (18 + noCount * 3) + "px";
+
+      // NO shrinks 😅
+      noBtn.style.fontSize = Math.max(10, 18 - noCount * 2) + "px";
+
+      // Change NO button text
+      const textIndex = Math.min(noCount, noButtonTexts.length - 1);
+      noBtn.textContent = noButtonTexts[textIndex];
+
+      // Optional: after many No's, hide it
+      if (noCount >= 9) {
+        noBtn.style.display = "none";
+      }
+    }
+
+    function sayYes() {
+      document.querySelector(".card").innerHTML = `
+        <h1>YAY!! 💕</h1>
+        <p style="font-size:22px;">I knew you’d say yes 😍</p>
+      `;
+    }
   </script>
 
 </body>
