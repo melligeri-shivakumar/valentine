@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Be My Valentine 💘</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
       margin: 0;
@@ -27,6 +29,7 @@
     h1 {
       color: #ff4d6d;
       margin-bottom: 25px;
+      font-size: 24px;
     }
 
     button {
@@ -53,6 +56,24 @@
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
     }
+
+    /* 📱 Mobile Optimization */
+    @media (max-width: 600px) {
+      .card {
+        width: 90%;
+        padding: 50px 30px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      button {
+        font-size: 22px;
+        padding: 18px 36px;
+        border-radius: 40px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -60,7 +81,7 @@
   <div class="card">
     <h1 id="question">Will you be my Valentine? 💘</h1>
 
-    <div>
+    <div id="buttons">
       <button id="yesBtn" onclick="sayYes()">Yes 💖</button>
       <button id="noBtn" onclick="sayNo()">No 😅</button>
     </div>
@@ -69,7 +90,7 @@
   <script>
     let noCount = 0;
 
-   const noButtonTexts = [
+    const noButtonTexts = [
       "No 😅",
       "Hmm… 🤔",
       "Maybe not 😬",
@@ -85,27 +106,30 @@
       const yesBtn = document.getElementById("yesBtn");
       const noBtn = document.getElementById("noBtn");
 
-      // YES grows 😈
+      // YES grows
       yesBtn.style.fontSize = (18 + noCount * 3) + "px";
 
-      // NO shrinks 😅
+      // NO shrinks
       noBtn.style.fontSize = Math.max(10, 18 - noCount * 2) + "px";
 
-      // Change NO button text
+      // Iterate through NO texts
       const textIndex = Math.min(noCount, noButtonTexts.length - 1);
       noBtn.textContent = noButtonTexts[textIndex];
 
-      // Optional: after many No's, hide it
+      // Eventually hide NO
       if (noCount >= 9) {
         noBtn.style.display = "none";
       }
     }
 
     function sayYes() {
-      document.querySelector(".card").innerHTML = `
-        <h1>YAY!! 💕</h1>
-        <p style="font-size:22px;">I knew you’d say yes 😍</p>
-      `;
+      document.getElementById("buttons").style.display = "none";
+      document.getElementById("question").textContent = "YAY!! 💕";
+
+      const msg = document.createElement("p");
+      msg.style.fontSize = "22px";
+      msg.textContent = "I knew you’d say yes 😍";
+      document.querySelector(".card").appendChild(msg);
     }
   </script>
 
