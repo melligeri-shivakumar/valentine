@@ -14,6 +14,7 @@
       align-items: center;
       background: linear-gradient(135deg, #ff758c, #ff7eb3);
       font-family: "Segoe UI", sans-serif;
+      overflow: hidden;
     }
 
     .card {
@@ -23,6 +24,7 @@
       text-align: center;
       box-shadow: 0 15px 40px rgba(0,0,0,0.25);
       width: 340px;
+      z-index: 20;
       animation: fadeIn 0.6s ease-in-out;
     }
 
@@ -52,12 +54,46 @@
       color: #333;
     }
 
+    /* 😭 Emoji Rain */
+    .emoji-rain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50; /* ABOVE EVERYTHING */
+    }
+
+    .emoji {
+      position: absolute;
+      top: -40px;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0.9;
+      }
+    }
+
+    /* Small shake so user KNOWS something happened */
+    .shake {
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
     }
 
-    /* 📱 Mobile Optimization */
+    /* 📱 Mobile */
     @media (max-width: 600px) {
       .card {
         width: 90%;
@@ -71,14 +107,13 @@
       button {
         font-size: 22px;
         padding: 18px 36px;
-        border-radius: 40px;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="card">
+  <div class="card" id="card">
     <h1 id="question">Will you be my Valentine? 💘</h1>
 
     <div id="buttons">
@@ -94,29 +129,47 @@
       "No 😅",
       "Hmm… 🤔",
       "Maybe not 😬",
-      "I regret this 😳",
-      "Why am I clicking this 🙈",
-      "This feels wrong 😅",
-      "I should stop 😏"
+      "Nahhhh 😳",
+      "Not this again.... 🙈",
+      "Babeeeee 😅",
+      "I love you 😏"
     ];
 
+    function cryEmojiRain() {
+      const rain = document.createElement("div");
+      rain.className = "emoji-rain";
+      document.body.appendChild(rain);
+
+      for (let i = 0; i < 40; i++) {
+        const emoji = document.createElement("div");
+        emoji.className = "emoji";
+        emoji.textContent = "😭";
+        emoji.style.left = Math.random() * 100 + "vw";
+        emoji.style.fontSize = (24 + Math.random() * 16) + "px";
+        emoji.style.animationDuration = (1.5 + Math.random()) + "s";
+        rain.appendChild(emoji);
+      }
+
+      setTimeout(() => rain.remove(), 2000);
+    }
+
     function sayNo() {
+      cryEmojiRain();
       noCount++;
+
+      const card = document.getElementById("card");
+      card.classList.add("shake");
+      setTimeout(() => card.classList.remove("shake"), 300);
 
       const yesBtn = document.getElementById("yesBtn");
       const noBtn = document.getElementById("noBtn");
 
-      // YES grows
       yesBtn.style.fontSize = (18 + noCount * 3) + "px";
-
-      // NO shrinks
       noBtn.style.fontSize = Math.max(10, 18 - noCount * 2) + "px";
 
-      // Iterate through NO texts
       const textIndex = Math.min(noCount, noButtonTexts.length - 1);
       noBtn.textContent = noButtonTexts[textIndex];
 
-      // Eventually hide NO
       if (noCount >= 9) {
         noBtn.style.display = "none";
       }
@@ -126,10 +179,19 @@
       document.getElementById("buttons").style.display = "none";
       document.getElementById("question").textContent = "YAY!! 💕";
 
-      const msg = document.createElement("p");
-      msg.style.fontSize = "22px";
-      msg.textContent = "I knew you’d say yes 😍";
-      document.querySelector(".card").appendChild(msg);
+      const msg1 = document.createElement("p");
+      msg1.style.fontSize = "22px";
+      msg1.textContent = "I knew you’d say yes 😍";
+
+      const msg2 = document.createElement("p");
+      msg2.style.fontSize = "24px";
+      msg2.style.fontWeight = "bold";
+      msg2.style.color = "#ff4d6d";
+      msg2.textContent = "I love you Kanda ❤️";
+
+      const card = document.getElementById("card");
+      card.appendChild(msg1);
+      card.appendChild(msg2);
     }
   </script>
 
