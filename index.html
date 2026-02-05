@@ -1,198 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Be My Valentine 💘</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      margin: 0;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #ff758c, #ff7eb3);
-      font-family: "Segoe UI", sans-serif;
+      justify-content: center;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+      background-size: 400% 400%;
+      animation: bgMove 12s ease infinite;
+      font-family: "Poppins", sans-serif;
       overflow: hidden;
     }
 
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     .card {
-      background: white;
-      padding: 40px;
-      border-radius: 20px;
+      width: min(92%, 420px);
+      padding: 40px 30px 45px;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(18px);
+      border-radius: 28px;
       text-align: center;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-      width: 340px;
-      z-index: 20;
-      animation: fadeIn 0.6s ease-in-out;
-    }
-
-    h1 {
-      color: #ff4d6d;
-      margin-bottom: 25px;
-      font-size: 24px;
-    }
-
-    button {
-      padding: 14px 28px;
-      font-size: 18px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      margin: 10px;
-      transition: all 0.25s ease;
-    }
-
-    #yesBtn {
-      background: #ff4d6d;
-      color: white;
-    }
-
-    #noBtn {
-      background: #e0e0e0;
-      color: #333;
-    }
-
-    /* 😭 Emoji Rain */
-    .emoji-rain {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 50; /* ABOVE EVERYTHING */
+      box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+      position: relative;
+      z-index: 5;
     }
 
     .emoji {
+      font-size: 64px;
+      margin-bottom: 12px;
+      animation: heartbeat 1.8s infinite;
+    }
+
+    .love {
+      font-size: 36px;
+      font-family: "Playfair Display", serif;
+      color: #ff4d6d;
+      animation: heartbeat 1.6s infinite;
+    }
+
+    @keyframes heartbeat {
+      0%,100% { transform: scale(1); }
+      25% { transform: scale(1.06); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.12); }
+    }
+
+    h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 28px;
+      color: #4a1c2f;
+      margin-bottom: 30px;
+      line-height: 1.35;
+    }
+
+    .buttons {
+      position: relative;
+      height: 90px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    button {
       position: absolute;
-      top: -40px;
-      animation: fall linear forwards;
+      padding: 14px 34px;
+      border-radius: 40px;
+      border: none;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: left 0.25s ease, top 0.25s ease, transform 0.15s ease;
     }
 
-    @keyframes fall {
-      to {
-        transform: translateY(110vh);
-        opacity: 0.9;
-      }
+    #yes {
+      left: 15%;
+      top: 30px;
+      background: linear-gradient(135deg, #ff4d6d, #ff758f);
+      color: white;
+      box-shadow: 0 15px 35px rgba(255,77,109,0.55);
     }
 
-    /* Small shake so user KNOWS something happened */
-    .shake {
-      animation: shake 0.3s;
+    #no {
+      left: 55%;
+      top: 30px;
+      background: rgba(255,255,255,0.95);
+      color: #777;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     }
 
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      bottom: -30px;
+      pointer-events: none;
+      animation: floatUp linear forwards;
+      z-index: 1;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
+    @keyframes floatUp {
+      from { transform: translateY(0) scale(1); opacity: 1; }
+      to { transform: translateY(-120vh) scale(1.8); opacity: 0; }
     }
 
-    /* 📱 Mobile */
-    @media (max-width: 600px) {
-      .card {
-        width: 90%;
-        padding: 50px 30px;
-      }
-
-      h1 {
-        font-size: 28px;
-      }
-
-      button {
-        font-size: 22px;
-        padding: 18px 36px;
-      }
+    @media (max-width: 480px) {
+      h2 { font-size: 23px; }
+      .emoji { font-size: 56px; }
+      .love { font-size: 30px; }
+      button { font-size: 15px; padding: 12px 28px; }
     }
   </style>
 </head>
+
 <body>
 
   <div class="card" id="card">
-    <h1 id="question">Will you be my Valentine? 💘</h1>
+    <div class="emoji">🐱❤️</div>
+    <h2>Kanda,<br>will you be my Valentine?</h2>
 
-    <div id="buttons">
-      <button id="yesBtn" onclick="sayYes()">Yes 💖</button>
-      <button id="noBtn" onclick="sayNo()">No 😅</button>
+    <div class="buttons" id="buttonArea">
+      <button id="yes">Yes 💖</button>
+      <button id="no">No 🙈</button>
     </div>
   </div>
 
   <script>
-    let noCount = 0;
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const card = document.getElementById("card");
+    const area = document.getElementById("buttonArea");
 
-    const noButtonTexts = [
-      "No 😅",
-      "Hmm… 🤔",
-      "Maybe not 😬",
-      "Nahhhh 😳",
-      "Not this again.... 🙈",
-      "Babeeeee 😅",
-      "I love you 😏"
-    ];
+    // Store original position
+    const originalPos = {
+      left: noBtn.offsetLeft,
+      top: noBtn.offsetTop
+    };
 
-    function cryEmojiRain() {
-      const rain = document.createElement("div");
-      rain.className = "emoji-rain";
-      document.body.appendChild(rain);
+    function runAwayAndReturn(e) {
+      e.preventDefault();
 
-      for (let i = 0; i < 40; i++) {
-        const emoji = document.createElement("div");
-        emoji.className = "emoji";
-        emoji.textContent = "😭";
-        emoji.style.left = Math.random() * 100 + "vw";
-        emoji.style.fontSize = (24 + Math.random() * 16) + "px";
-        emoji.style.animationDuration = (1.5 + Math.random()) + "s";
-        rain.appendChild(emoji);
-      }
+      const areaRect = area.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
 
-      setTimeout(() => rain.remove(), 2000);
+      const maxX = areaRect.width - btnRect.width;
+      const maxY = areaRect.height - btnRect.height;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+
+      setTimeout(() => {
+        noBtn.style.left = originalPos.left + "px";
+        noBtn.style.top  = originalPos.top + "px";
+      }, 300);
     }
 
-    function sayNo() {
-      cryEmojiRain();
-      noCount++;
+    noBtn.addEventListener("mouseenter", runAwayAndReturn);
+    noBtn.addEventListener("touchstart", runAwayAndReturn);
+    noBtn.addEventListener("click", runAwayAndReturn);
 
-      const card = document.getElementById("card");
-      card.classList.add("shake");
-      setTimeout(() => card.classList.remove("shake"), 300);
+    yesBtn.addEventListener("click", () => {
+      confetti({
+        particleCount: 260,
+        spread: 120,
+        origin: { y: 0.65 }
+      });
 
-      const yesBtn = document.getElementById("yesBtn");
-      const noBtn = document.getElementById("noBtn");
+      card.innerHTML = `
+        <div class="emoji">💖</div>
+        <div class="love">I love you Kanda ❤️</div>
+      `;
+    });
 
-      yesBtn.style.fontSize = (18 + noCount * 3) + "px";
-      noBtn.style.fontSize = Math.max(10, 18 - noCount * 2) + "px";
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = Math.random() > 0.5 ? "❤️" : "💗";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 22 + 14 + "px";
+      heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+      heart.style.opacity = Math.random() * 0.5 + 0.4;
 
-      const textIndex = Math.min(noCount, noButtonTexts.length - 1);
-      noBtn.textContent = noButtonTexts[textIndex];
-
-      if (noCount >= 9) {
-        noBtn.style.display = "none";
-      }
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 8000);
     }
 
-    function sayYes() {
-      document.getElementById("buttons").style.display = "none";
-      document.getElementById("question").textContent = "YAY!! 💕";
-
-      const msg1 = document.createElement("p");
-      msg1.style.fontSize = "22px";
-      msg1.textContent = "I knew you’d say yes 😍";
-
-      const msg2 = document.createElement("p");
-      msg2.style.fontSize = "24px";
-      msg2.style.fontWeight = "bold";
-      msg2.style.color = "#ff4d6d";
-      msg2.textContent = "I love you Kanda ❤️";
-
-      const card = document.getElementById("card");
-      card.appendChild(msg1);
-      card.appendChild(msg2);
-    }
+    setInterval(createHeart, 380);
   </script>
 
 </body>
